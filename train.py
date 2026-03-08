@@ -6,18 +6,15 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from tensorflow.keras import layers, models
 
-# ==============================
-# CONFIG
-# ==============================
+
 IMG_SIZE = 224
 DATA_DIR = "data/train/images"
 MODEL_NAME = "defect_detector_cnn.h5"
 
 print("Loading data...")
 
-# ==============================
 # LOAD DATA
-# ==============================
+
 classes = sorted(os.listdir(DATA_DIR))
 
 data = []
@@ -46,16 +43,16 @@ y = np.array(labels)
 
 print("Dataset shape:", X.shape)
 
-# ==============================
+
 # TRAIN TEST SPLIT
-# ==============================
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# ==============================
+
 # BUILD CNN MODEL
-# ==============================
+
 model = models.Sequential([
     layers.Input(shape=(224, 224, 3)),
 
@@ -89,9 +86,8 @@ model.compile(
 
 model.summary()
 
-# ==============================
 # TRAIN
-# ==============================
+
 print("Training started...")
 
 history = model.fit(
@@ -102,17 +98,9 @@ history = model.fit(
     validation_data=(X_test, y_test)
 )
 
-# ==============================
+
 # SAVE MODEL
-# ==============================
+
 model.save(MODEL_NAME)
 print(f"✅ Model saved as {MODEL_NAME}")
 
-# ==============================
-# PLOT ACCURACY
-# ==============================
-plt.plot(history.history["accuracy"], label="train")
-plt.plot(history.history["val_accuracy"], label="val")
-plt.title("Model Accuracy")
-plt.legend()
-plt.show()
